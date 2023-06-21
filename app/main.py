@@ -21,9 +21,8 @@ async def dtm(info: Request):
 
     result = tm(request_values)
 
-    if result == "Accepted":
+    if result == True:
         return{
-            "code": 200,
             "message": "Accepted"
         }
     
