@@ -1,5 +1,5 @@
 from automata.tm.dtm import DTM
-import logging
+from utils.logger import logger
 
 def tm(request_values):
   dtm = DTM(
@@ -13,7 +13,7 @@ def tm(request_values):
   )
   
   if dtm.accepts_input(request_values.get("input")):
-        logging.info("Input accepted")
+        logger.info("Input accepted")
         return True
-  logging.error("Input rejected")
+  logger.error("Input rejected")
   return False
