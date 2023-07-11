@@ -1,5 +1,5 @@
 from automata.tm.dtm import DTM
-from utils.logger import logger
+from app.utils.logger import logger
 
 def tm(request_values):
   dtm = DTM(

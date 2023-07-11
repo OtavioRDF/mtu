@@ -1,5 +1,5 @@
 from fastapi import Request
-from utils.logger import logger
+from app.utils.logger import logger
 
 
 async def validate_infos(info: Request):    

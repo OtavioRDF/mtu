@@ -1,33 +1,7 @@
-from fastapi import FastAPI, Request, HTTPException
-from services.validate_infos import validate_infos
-from services.turing_machine import tm
+from fastapi import FastAPI
 
-app = FastAPI()
+from app.api.routes import api_router
 
+app = FastAPI(title= "Turing Machine TP")
 
-@app.post("/dtm", status_code=200)
-async def dtm(info: Request):
-    info = await info.json()
-    infos = await validate_infos(info)
-    
-    error_response, request_values = infos
-
-    if len(error_response) != 0:
-        raise HTTPException(
-            status_code= error_response.get("code"),
-            detail= error_response.get("message"),
-            headers= {"400": "Bad Request"}
-        )
-
-    result = tm(request_values)
-
-    if result == True:
-        return{
-            "message": "Accepted"
-        }
-    
-    raise HTTPException(
-            status_code= 400,
-            detail= "Rejected",
-            headers= {"400": "Bad Request"}
-        )
+app.include_router(api_router)
