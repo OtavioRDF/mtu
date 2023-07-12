@@ -1,4 +1,4 @@
-from sqlaclhemy import Session
+from sqlaclhemy.orm import Session
 from . import models, schemas
 
 def get_history(db: Session, id: int): 
