@@ -25,7 +25,7 @@ async def dtm(info: Request, db: Session = Depends(get_db)):
             headers= {"400": "Bad Request"}
         )
 
-    result = tm(request_values)
+    result = await tm(request_values, info)
 
     history = schemas.History(query=str(info), result=result)
     crud.create_history(db=db, history=history)
