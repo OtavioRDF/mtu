@@ -10,11 +10,11 @@ services:
       - 8000:8000
 
   database:
-    image: mysql
+    image: postgres:13.1
     env_file:
-      - config/mysql.env
+      - config/postgres.env
     ports:
-      - 3306:3306
+      - 5432:5432
 
   adminer:
     image: adminer
