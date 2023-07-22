@@ -1,7 +1,13 @@
 from fastapi import APIRouter, Request, HTTPException, Depends
 from sqlalchemy.orm import Session
+
+from typing import List
+
+import pika 
+
 from app.use_cases.validate_infos import validate_infos
 from app.use_cases.turing_machine import tm
+from jobs.sender import sent_to_queue
 
 from app.entities.schemas import History
 from app.entities import crud, schemas
@@ -40,6 +46,22 @@ async def dtm(info: Request, db: Session = Depends(get_db)):
             detail= "Rejected",
             headers= {"400": "Bad Request"}
         )
+
+@router.post("/dtm/multiple_mtu", response_model= None, status_code=200)
+async def multiple_dtm(info: Request):
+    list_info = await info.json()
+    infos = []
+    for info in list_info:
+        response, request_values = await validate_infos(info)
+
+        if not response:
+            infos.append(request_values)
+
+    sent_to_queue(infos)
+
+    return {
+        "message": "Processing your inputs...."
+    }
 
 @router.get("/dtm/get_history/{id}", status_code=200)
 async def get_history(id: int, db: Session = Depends(get_db)):
